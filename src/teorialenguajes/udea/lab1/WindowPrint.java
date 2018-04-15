@@ -40,7 +40,7 @@ import teorialenguajes.udea.lab1.model.Transicion;
 public class WindowPrint extends javax.swing.JFrame {
 
     private int x, y;
-    //private String jsonTest = "{\"Simbolos de entrada\":[\"0\", \"1\", \"&\"],\"Simbolos en la pila\":[\"0\", \"▼\"],\"Estados\":[{\"nombre\":\"S0\",\"inicial\":true,\"transiciones\":[[\"#1\",\"#2\",\"R\"],[\"#1\",\"R\",\"R\"]]},{\"nombre\":\"S1\",\"inicial\":false,\"transiciones\":[[\"R\",\"#3\",\"R\"],[\"R\",\"R\",\"A\"]]}],\"Configuracion inicial\":[\"▼\"],\"Transiciones\":{\"#1\":[\"apile('0')\",\"permanezca\",\"avance\"],\"#2\":[\"desapile\",\"cambia S1\",\"avance\"],\"#3\":[\"desapile\",\"permanezca\",\"avance\"],\"R\":[\"Rechace\"],\"A\":[\"Acepte\"]}}";
+    private String jsonTest = "{\"Simbolos de entrada\":[\"0\", \"1\", \"&\"],\"Simbolos en la pila\":[\"0\", \"▼\"],\"Estados\":[{\"nombre\":\"S0\",\"inicial\":true,\"transiciones\":[[\"#1\",\"#2\",\"R\"],[\"#1\",\"R\",\"R\"]]},{\"nombre\":\"S1\",\"inicial\":false,\"transiciones\":[[\"R\",\"#3\",\"R\"],[\"R\",\"R\",\"A\"]]}],\"Configuracion inicial\":[\"▼\"],\"Transiciones\":{\"#1\":[\"apile('0')\",\"permanezca\",\"avance\"],\"#2\":[\"desapile\",\"cambia S1\",\"avance\"],\"#3\":[\"desapile\",\"permanezca\",\"avance\"],\"R\":[\"Rechace\"],\"A\":[\"Acepte\"]}}";
     private JTable tablaTransiciones;
     private DefaultTableModel model;
     private AutomataPila a = null;
@@ -53,6 +53,8 @@ public class WindowPrint extends javax.swing.JFrame {
 
     Stack<Character> pila = new Stack<Character>();
     private List<Character> listaPila = new ArrayList<Character>();
+
+    private WindowEditAP editAP;
 
     public WindowPrint() {
         super("Autómata de Pila");
@@ -70,6 +72,8 @@ public class WindowPrint extends javax.swing.JFrame {
         });
         scrollInformacion.getViewport().setOpaque(false);
         scrollOperaciones.getViewport().setOpaque(false);
+
+        editAP = new WindowEditAP();
     }
 
     /**
@@ -113,6 +117,7 @@ public class WindowPrint extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -411,6 +416,15 @@ public class WindowPrint extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem2.setText("Edit AP");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
         jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem5.setText("Save Matriz (PDF)        ");
         jMenu1.add(jMenuItem5);
@@ -488,6 +502,7 @@ public class WindowPrint extends javax.swing.JFrame {
         int res = JOptionPane.showConfirmDialog(this, "¿Realmente desea salir?",
                 "Confirmar salida", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (res == 0) {
+            editAP.dispose();
             dispose();
         }
     }//GEN-LAST:event_jMenuItem6ActionPerformed
@@ -519,6 +534,16 @@ public class WindowPrint extends javax.swing.JFrame {
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
 
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        try {
+            editAP.cargarJSONParaEditar(new JSONObject(jsonTest));
+            editAP.cargarAPParaEditar();
+            editAP.setVisible(true);
+        } catch (JSONException ex) {
+            Logger.getLogger(WindowPrint.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -566,6 +591,7 @@ public class WindowPrint extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
@@ -591,7 +617,7 @@ public class WindowPrint extends javax.swing.JFrame {
     public void initialConfig(JSONObject object) {
         try {
             a = getAutomataPila(object);
-            
+
             mostrarDatosAutomata(a);
         } catch (JSONException e) {
             e.printStackTrace();
