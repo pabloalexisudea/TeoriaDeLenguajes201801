@@ -1,6 +1,8 @@
 package teorialenguajes.udea.lab1;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,11 +13,14 @@ import java.util.Scanner;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -75,6 +80,8 @@ public class WindowPrint extends javax.swing.JFrame {
         scrollInformacion.getViewport().setOpaque(false);
         scrollOperaciones.getViewport().setOpaque(false);
 
+        panelTransiciones.setLayout(new BoxLayout(panelTransiciones, BoxLayout.Y_AXIS));
+
         editAP = new WindowEditAP();
     }
 
@@ -104,6 +111,7 @@ public class WindowPrint extends javax.swing.JFrame {
         transicionesAp = new javax.swing.JLabel();
         scrollOperaciones = new javax.swing.JScrollPane();
         panelDeOperaciones = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
         panelTransiciones = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         Cadena = new javax.swing.JLabel();
@@ -239,16 +247,20 @@ public class WindowPrint extends javax.swing.JFrame {
 
         scrollInformacion.setViewportView(panelDeInformacion);
 
+        jScrollPane2.setBorder(null);
+
         javax.swing.GroupLayout panelTransicionesLayout = new javax.swing.GroupLayout(panelTransiciones);
         panelTransiciones.setLayout(panelTransicionesLayout);
         panelTransicionesLayout.setHorizontalGroup(
             panelTransicionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 917, Short.MAX_VALUE)
         );
         panelTransicionesLayout.setVerticalGroup(
             panelTransicionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 510, Short.MAX_VALUE)
         );
+
+        jScrollPane2.setViewportView(panelTransiciones);
 
         Cadena.setText("Cadena");
 
@@ -268,7 +280,7 @@ public class WindowPrint extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(Cadena)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(inputDataAP, javax.swing.GroupLayout.DEFAULT_SIZE, 824, Short.MAX_VALUE)
+                .addComponent(inputDataAP, javax.swing.GroupLayout.DEFAULT_SIZE, 845, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -285,15 +297,19 @@ public class WindowPrint extends javax.swing.JFrame {
         panelDeOperaciones.setLayout(panelDeOperacionesLayout);
         panelDeOperacionesLayout.setHorizontalGroup(
             panelDeOperacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelTransiciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(panelDeOperacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         panelDeOperacionesLayout.setVerticalGroup(
             panelDeOperacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelDeOperacionesLayout.createSequentialGroup()
-                .addComponent(panelTransiciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(517, 517, 517)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(panelDeOperacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelDeOperacionesLayout.createSequentialGroup()
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 55, Short.MAX_VALUE)))
         );
 
         scrollOperaciones.setViewportView(panelDeOperaciones);
@@ -317,7 +333,7 @@ public class WindowPrint extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(textoDeLaPila, javax.swing.GroupLayout.DEFAULT_SIZE, 1155, Short.MAX_VALUE)
+                .addComponent(textoDeLaPila, javax.swing.GroupLayout.DEFAULT_SIZE, 1176, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -359,14 +375,14 @@ public class WindowPrint extends javax.swing.JFrame {
             .addGroup(panelContenedorLayout.createSequentialGroup()
                 .addComponent(scrollInformacion, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollOperaciones))
+                .addComponent(scrollOperaciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jScrollPane1)
         );
         panelContenedorLayout.setVerticalGroup(
             panelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelContenedorLayout.createSequentialGroup()
                 .addGroup(panelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(scrollOperaciones)
+                    .addComponent(scrollOperaciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(scrollInformacion))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -623,6 +639,7 @@ public class WindowPrint extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPanel panelContenedor;
@@ -641,8 +658,7 @@ public class WindowPrint extends javax.swing.JFrame {
     private void initialConfig(JSONObject object) {
         panelTransiciones.removeAll();
         panelTransiciones.repaint();
-        
-        
+
         try {
             a = getAutomataPila(object);
 
@@ -650,14 +666,20 @@ public class WindowPrint extends javax.swing.JFrame {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        
-        
+
         panelDeInformacion.repaint();
 
         /**
          * *******************************************************************
          */
+        JPanel panelDelEstado = new JPanel();
+        panelDelEstado.setLayout(new FlowLayout());
+
         for (Estado e : a.getEstados()) {
+            JPanel panelEspecifico = new JPanel();
+            panelEspecifico.setOpaque(false);
+            panelEspecifico.setLayout(new BoxLayout(panelEspecifico, BoxLayout.Y_AXIS));
+
             String[] columns = new String[a.getSimbolosEntrada().length + 1];
             columns[0] = "";
             for (int i = 1; i < a.getSimbolosEntrada().length + 1; i++) {
@@ -676,10 +698,20 @@ public class WindowPrint extends javax.swing.JFrame {
                 }
             }
 
-            JTable table = new JTable(data, columns);
+            Object[][] fullData = new Object[data.length+1][data[0].length];
+            for (int i = 0; i < fullData.length; i++) {
+                for (int j = 0; j < fullData[i].length; j++) {
+                    if (i == 0) {
+                        fullData[i][j] = columns[j];
+                    } else {
+                        fullData[i][j] = data[i-1][j];
+                    }
+                }
+            }
+
+            JTable table = new JTable(fullData, columns);
             table.getTableHeader().setReorderingAllowed(false);
             ColumsAutoSizer.sizeColumnsToFit(table);
-            JScrollPane js = new JScrollPane(table);
 
             int widthTable = 0, height = 0;
 
@@ -695,23 +727,22 @@ public class WindowPrint extends javax.swing.JFrame {
             }
             height += table.getRowHeight() * table.getRowCount() + 28;
 
-            js.setBounds(0, 0, widthTable + 2, height);
-
-            int xPanel = panelTransiciones.getWidth() / 2 - js.getWidth() / 2;
-            int yPanel = panelTransiciones.getHeight() / 2 - js.getHeight() / 2;
-
-            js.setLocation((xPanel), yPanel);
-
             JLabel nombreEstado = new JLabel(e.getNombre(), SwingConstants.CENTER);
             nombreEstado.setBounds(0, 0, 40, 20);
-            nombreEstado.setLocation(panelTransiciones.getWidth() / 2 - 20, panelTransiciones.getHeight() / 2 + js.getHeight() / 2 - 5);
+            nombreEstado.setLocation(panelEspecifico.getWidth() / 2 - 20, panelEspecifico.getHeight() / 2 + panelEspecifico.getHeight() / 2 - 5);
 
-            panelTransiciones.add(js);
-            panelTransiciones.add(nombreEstado);
+            panelEspecifico.add(table);
+            panelEspecifico.add(nombreEstado);
+
+            panelDelEstado.add(panelEspecifico);
         }
+        panelTransiciones.add(panelDelEstado);
+
         /**
          * *******************************************************************
          */
+        validate();
+        repaint();
     }
 
     private AutomataPila getAutomataPila(JSONObject f) throws JSONException {
@@ -752,7 +783,7 @@ public class WindowPrint extends javax.swing.JFrame {
             boolean esInicial = estado.getBoolean("inicial");
 
             JSONArray transDelEstadoJSON = estado.getJSONArray("transiciones");
-            String[][] transDelEstado = new String[transDelEstadoJSON.length()][3];
+            String[][] transDelEstado = new String[transDelEstadoJSON.length()][transDelEstadoJSON.getJSONArray(0).length()];
 
             for (int j = 0; j < transDelEstadoJSON.length(); j++) {
                 JSONArray operaciones = transDelEstadoJSON.getJSONArray(j);
@@ -922,10 +953,10 @@ public class WindowPrint extends javax.swing.JFrame {
 
         textoDeLaPila.setText(fullText);
     }
-    
+
     public void nuevoJSONAPDeLaVista(JSONObject jSONObject) throws JSONException {
         jsonAP = jSONObject;
-        
+
         initialConfig(jsonAP);
     }
 }
