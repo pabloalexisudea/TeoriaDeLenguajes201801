@@ -65,6 +65,7 @@ public class WindowEditAP extends javax.swing.JFrame {
     // private String jsonTestText1 = "{  \"Simbolos de entrada\": [],  \"Simbolos en la pila\": [],  \"Estados\": [],  \"Configuracion inicial\": [],  \"Transiciones\": {}}";
     private JSONObject jsonTest;
     private JTable tablaTransiciones;
+    private WindowPrint pantallaPrincipal;
 
     public WindowEditAP() {
         super("Autómata de Pila");
@@ -136,6 +137,11 @@ public class WindowEditAP extends javax.swing.JFrame {
 
         jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem5.setText("Save        ");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem5);
         jMenu1.add(jSeparator3);
 
@@ -179,6 +185,18 @@ public class WindowEditAP extends javax.swing.JFrame {
         setVisible(false);
         dispose();
     }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        try {
+            setVisible(false);
+            dispose();
+
+            pantallaPrincipal.nuevoJSONAPDeLaVista(jsonTest);
+        } catch (JSONException ex) {
+            Logger.getLogger(WindowEditAP.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -1076,6 +1094,7 @@ public class WindowEditAP extends javax.swing.JFrame {
     }
     //</editor-fold>
 
+    //<editor-fold desc="CONFIGURACIÓN INICIAL DE LA PILA">
     private JPanel cargarPanelConfInicial(JPanel panelConfInicial) throws JSONException {
         JLabel tituloDelPanel = new JLabel("Conf. Inicial");
         tituloDelPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
@@ -1111,11 +1130,36 @@ public class WindowEditAP extends javax.swing.JFrame {
                 }
             }
         });
+        configuracionInicial.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                try {
+                    String caracteresIniciales = configuracionInicial.getText();
+                    JSONArray arregloCaracteres = new JSONArray();
+
+                    for (int i = 0; i < caracteresIniciales.length(); i++) {
+                        arregloCaracteres.put(String.valueOf(caracteresIniciales.charAt(i)));
+                    }
+
+                    jsonTest.put("Configuracion inicial", arregloCaracteres);
+                } catch (JSONException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        JSONArray arrayInicial = jsonTest.getJSONArray("Configuracion inicial");
+        String s = "";
+        for (int i = 0; i < arrayInicial.length(); i++) {
+            s += String.valueOf(arrayInicial.get(i));
+        }
+        configuracionInicial.setText(s);
 
         panelConfInicial.add(configuracionInicial);
 
         return panelContenedor;
     }
+    //</editor-fold>
 
     private String[] simbolosEnLaPilaParaBox() throws JSONException {
         JSONArray simbolosEnPila = jsonTest.getJSONArray("Simbolos en la pila");
@@ -1247,5 +1291,9 @@ public class WindowEditAP extends javax.swing.JFrame {
     // TODO: PARA PASAR DATOS DESDE LA VISTA ANTERIOR
     public void cargarJSONParaEditar(JSONObject object) throws JSONException {
         jsonTest = object;
+    }
+
+    public void referenciaAPantallaPrincipal(WindowPrint print) throws JSONException {
+        pantallaPrincipal = print;
     }
 }

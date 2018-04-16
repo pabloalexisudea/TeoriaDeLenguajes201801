@@ -41,6 +41,8 @@ public class WindowPrint extends javax.swing.JFrame {
 
     private int x, y;
     private String jsonTest = "{\"Simbolos de entrada\":[\"0\", \"1\", \"&\"],\"Simbolos en la pila\":[\"0\", \"▼\"],\"Estados\":[{\"nombre\":\"S0\",\"inicial\":true,\"transiciones\":[[\"#1\",\"#2\",\"R\"],[\"#1\",\"R\",\"R\"]]},{\"nombre\":\"S1\",\"inicial\":false,\"transiciones\":[[\"R\",\"#3\",\"R\"],[\"R\",\"R\",\"A\"]]}],\"Configuracion inicial\":[\"▼\"],\"Transiciones\":{\"#1\":[\"apile('0')\",\"permanezca\",\"avance\"],\"#2\":[\"desapile\",\"cambia S1\",\"avance\"],\"#3\":[\"desapile\",\"permanezca\",\"avance\"],\"R\":[\"Rechace\"],\"A\":[\"Acepte\"]}}";
+    private String jsonVacio = "{\"Simbolos de entrada\": [],\"Simbolos en la pila\": [],\"Estados\": [],\"Configuracion inicial\": [],\"Transiciones\": {}}";
+    private JSONObject jsonAP;
     private JTable tablaTransiciones;
     private DefaultTableModel model;
     private AutomataPila a = null;
@@ -486,8 +488,9 @@ public class WindowPrint extends javax.swing.JFrame {
                 while (input.hasNext()) {
                     num += input.nextLine();
                 }
+                jsonAP = new JSONObject(num);
 
-                initialConfig(new JSONObject(num));
+                initialConfig(jsonAP);
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "El archivo no existe", "Error leyendo archivo", JOptionPane.WARNING_MESSAGE);
@@ -532,16 +535,29 @@ public class WindowPrint extends javax.swing.JFrame {
     }//GEN-LAST:event_inputDataAPKeyTyped
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-
+        try {
+            editAP.cargarJSONParaEditar(new JSONObject(jsonVacio));
+            editAP.cargarAPParaEditar();
+            editAP.referenciaAPantallaPrincipal(this);
+            editAP.setVisible(true);
+        } catch (JSONException ex) {
+            Logger.getLogger(WindowPrint.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         try {
-            editAP.cargarJSONParaEditar(new JSONObject(jsonTest));
-            editAP.cargarAPParaEditar();
-            editAP.setVisible(true);
+            if (jsonAP != null) {
+                editAP.cargarJSONParaEditar(jsonAP);
+                editAP.cargarAPParaEditar();
+                editAP.referenciaAPantallaPrincipal(this);
+                editAP.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Ingrese un AP primero");
+            }
         } catch (JSONException ex) {
-            Logger.getLogger(WindowPrint.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WindowPrint.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
@@ -555,16 +571,24 @@ public class WindowPrint extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(WindowPrint.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WindowPrint.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(WindowPrint.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WindowPrint.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(WindowPrint.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WindowPrint.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(WindowPrint.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WindowPrint.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -614,7 +638,11 @@ public class WindowPrint extends javax.swing.JFrame {
     private javax.swing.JLabel udeaLabel;
     // End of variables declaration//GEN-END:variables
 
-    public void initialConfig(JSONObject object) {
+    private void initialConfig(JSONObject object) {
+        panelTransiciones.removeAll();
+        panelTransiciones.repaint();
+        
+        
         try {
             a = getAutomataPila(object);
 
@@ -622,6 +650,9 @@ public class WindowPrint extends javax.swing.JFrame {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        
+        
+        panelDeInformacion.repaint();
 
         /**
          * *******************************************************************
@@ -683,7 +714,7 @@ public class WindowPrint extends javax.swing.JFrame {
          */
     }
 
-    public AutomataPila getAutomataPila(JSONObject f) throws JSONException {
+    private AutomataPila getAutomataPila(JSONObject f) throws JSONException {
         char[] simbolosEntrada = null;
         char[] simbolosPila = null;
         Estado[] estados = null;
@@ -868,7 +899,7 @@ public class WindowPrint extends javax.swing.JFrame {
         inputDataAP.setEnabled(true);
     }
 
-    public void ejecutarTransaccion(char c) {
+    private void ejecutarTransaccion(char c) {
         pila.push(c);
         listaPila.add(c);
 
@@ -890,5 +921,11 @@ public class WindowPrint extends javax.swing.JFrame {
         fullText += part4;
 
         textoDeLaPila.setText(fullText);
+    }
+    
+    public void nuevoJSONAPDeLaVista(JSONObject jSONObject) throws JSONException {
+        jsonAP = jSONObject;
+        
+        initialConfig(jsonAP);
     }
 }
