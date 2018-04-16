@@ -33,7 +33,7 @@ public class StringReader {
 	}
 
 	public void nombreTransicion(int primerEstado) {
-	
+		outerloop:
 	//Capturamos la cadena y sacamos el primer caracter
 	for(int i = 0; i<cadena.length(); i++) {
 		caracter = cadena.charAt(i);
@@ -68,6 +68,7 @@ public class StringReader {
 							JOptionPane.showMessageDialog(null, "Secuencia con estado aceptado");
 						}else {
 							JOptionPane.showMessageDialog(null, "Secuencia con estado rechazado");
+							break outerloop;
 						}
 					}
 				}
@@ -77,6 +78,8 @@ public class StringReader {
 		}
 		}
 	}
+	  
+	
 }
 
 }
