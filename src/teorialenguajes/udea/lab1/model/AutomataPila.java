@@ -35,6 +35,11 @@ public class AutomataPila {
     public char[] getSimbolosPila() {
         return simbolosPila;
     }
+    
+    public char getSimboloPila(int index) {
+        return simbolosPila[index];
+    }
+    
 
     public void setSimbolosPila(char[] simbolosPila) {
         this.simbolosPila = simbolosPila;

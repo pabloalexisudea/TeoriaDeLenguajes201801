@@ -32,6 +32,12 @@ import teorialenguajes.udea.lab1.model.AutomataPila;
 import teorialenguajes.udea.lab1.model.ColumsAutoSizer;
 import teorialenguajes.udea.lab1.model.Estado;
 import teorialenguajes.udea.lab1.model.Transicion;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  *
@@ -108,6 +114,7 @@ public class WindowPrint extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         Cadena = new javax.swing.JLabel();
         inputDataAP = new javax.swing.JTextField();
+        btnIngresar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -179,6 +186,8 @@ public class WindowPrint extends javax.swing.JFrame {
 
         transicionesAp.setForeground(new java.awt.Color(178, 178, 178));
         transicionesAp.setText("n/a");
+        
+        btnIngresar.setText("Ingresar");
 
         javax.swing.GroupLayout panelDeInformacionLayout = new javax.swing.GroupLayout(panelDeInformacion);
         panelDeInformacion.setLayout(panelDeInformacionLayout);
@@ -259,27 +268,41 @@ public class WindowPrint extends javax.swing.JFrame {
                 inputDataAPKeyTyped(evt);
             }
         });
+        
+        
+        btnIngresar.setEnabled(false);
+        btnIngresar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) { 
+        		StringReader stringReader = new StringReader();
+        		stringReader.leerCadena(a,inputDataAP.getText());
+        		inputDataAP.setText("");
+        		
+        	}
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Cadena)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(inputDataAP, javax.swing.GroupLayout.DEFAULT_SIZE, 824, Short.MAX_VALUE)
-                .addContainerGap())
+        	jPanel3Layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(jPanel3Layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(Cadena)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(inputDataAP, GroupLayout.PREFERRED_SIZE, 646, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+        			.addComponent(btnIngresar)
+        			.addGap(64))
         );
         jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Cadena, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inputDataAP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+        	jPanel3Layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(jPanel3Layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(jPanel3Layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(Cadena, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(inputDataAP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(btnIngresar))
+        			.addContainerGap())
         );
+        jPanel3.setLayout(jPanel3Layout);
 
         javax.swing.GroupLayout panelDeOperacionesLayout = new javax.swing.GroupLayout(panelDeOperaciones);
         panelDeOperaciones.setLayout(panelDeOperacionesLayout);
@@ -605,6 +628,7 @@ public class WindowPrint extends javax.swing.JFrame {
     private javax.swing.JLabel estadoInicial;
     private javax.swing.JLabel estados;
     private javax.swing.JTextField inputDataAP;
+    private javax.swing.JButton btnIngresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -793,7 +817,7 @@ public class WindowPrint extends javax.swing.JFrame {
                     oper3 = operaciones.getString(i);
                 }
             }
-
+          
             transiciones.add(new Transicion(nombre, oper1, oper2, oper3));
         }
 
@@ -885,6 +909,7 @@ public class WindowPrint extends javax.swing.JFrame {
             fullName += "<br>";
 
             transicionesText += fullName;
+            
 
         }
         transicionesText += "</body></html>";
@@ -897,6 +922,7 @@ public class WindowPrint extends javax.swing.JFrame {
         confiInicialPila.setText(confiInicialText);
         transicionesAp.setText(transicionesText);
         inputDataAP.setEnabled(true);
+        btnIngresar.setEnabled(true);
     }
 
     private void ejecutarTransaccion(char c) {
