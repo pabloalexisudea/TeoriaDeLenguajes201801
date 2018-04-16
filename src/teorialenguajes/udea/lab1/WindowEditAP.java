@@ -985,11 +985,11 @@ public class WindowEditAP extends javax.swing.JFrame {
         JComboBox operEstados = new JComboBox(accionDeEstado());
 
         // OPERACION DE ENTRADA
-        String[] entradas = {"", "Avance", "Retenga"};
+        String[] entradas = {"Nada", "Avance", "Retenga"};
         JComboBox operEntrada = new JComboBox(entradas);
 
         // ACCIONES 
-        String[] acciones = {"", "Acepte", "Rechace"};
+        String[] acciones = {"Nada", "Acepte", "Rechace"};
         JComboBox operAccion = new JComboBox(acciones);
 
         operPila.addItemListener(new ItemListener() {
@@ -1038,27 +1038,28 @@ public class WindowEditAP extends javax.swing.JFrame {
                 try {
                     String nombreTran = nombreTransicion.getSelectedItem().toString();
 
-                    if (!nombreTran.isEmpty()) {
+                    if (!nombreTran.isEmpty() && !nombreTran.equals("Nada")) {
                         String oper1 = operPila.getSelectedItem().toString();
                         String oper2 = operEstados.getSelectedItem().toString();
                         String oper3 = operEntrada.getSelectedItem().toString();
                         String oper4 = operAccion.getSelectedItem().toString();
 
-                        if (oper1.isEmpty() && oper2.isEmpty() && oper3.isEmpty() && oper4.isEmpty()) {
+                        if ((oper1.isEmpty() && oper2.isEmpty() && oper3.isEmpty() && oper4.isEmpty())
+                                || (oper1.equals("Nada") && oper2.equals("Nada") && oper3.equals("Nada") && oper4.equals("Nada"))) {
                             JOptionPane.showMessageDialog(null, "Indique operaciones a realizar", "Sin operaciones", JOptionPane.WARNING_MESSAGE);
                         } else {
                             JSONArray arrayDeTransiciones = new JSONArray();
 
-                            if (oper4.isEmpty()) {
-                                if (!oper1.isEmpty()) {
+                            if (oper4.isEmpty() || oper4.equals("Nada")) {
+                                if (!oper1.isEmpty() || !oper1.equals("Nada")) {
                                     arrayDeTransiciones.put(oper1);
                                 }
 
-                                if (!oper2.isEmpty()) {
+                                if (!oper2.isEmpty() || !oper2.equals("Nada")) {
                                     arrayDeTransiciones.put(oper2);
                                 }
 
-                                if (!oper3.isEmpty()) {
+                                if (!oper3.isEmpty() || !oper3.equals("Nada")) {
                                     arrayDeTransiciones.put(oper3);
                                 }
                             } else {
@@ -1165,9 +1166,9 @@ public class WindowEditAP extends javax.swing.JFrame {
         JSONArray simbolosEnPila = jsonTest.getJSONArray("Simbolos en la pila");
         String[] simbolos = new String[simbolosEnPila.length() + 2];
 
-        simbolos[0] = "";
+        simbolos[0] = "Nada";
         for (int i = 0; i < simbolosEnPila.length(); i++) {
-            simbolos[i + 1] = "Apile('" + simbolosEnPila.get(i) + "')";
+            simbolos[i + 1] = "Apila('" + simbolosEnPila.get(i) + "')";
         }
         simbolos[simbolos.length - 1] = "Desapile";
 
@@ -1217,7 +1218,7 @@ public class WindowEditAP extends javax.swing.JFrame {
         }
 
         String[] nombresFull = new String[nombres.size() + 1];
-        nombresFull[0] = "";
+        nombresFull[0] = "Nada";
         for (int i = 1; i < nombresFull.length; i++) {
             nombresFull[i] = nombres.get(i - 1);
         }
@@ -1228,7 +1229,7 @@ public class WindowEditAP extends javax.swing.JFrame {
     private String[] accionDeEstado() throws JSONException {//Permanezca
         JSONArray estados = jsonTest.getJSONArray("Estados");
         String[] cambiosJson = new String[estados.length() + 2];
-        cambiosJson[0] = "";
+        cambiosJson[0] = "Nada";
         cambiosJson[1] = "Permanezca";
 
         for (int i = 0; i < estados.length(); i++) {

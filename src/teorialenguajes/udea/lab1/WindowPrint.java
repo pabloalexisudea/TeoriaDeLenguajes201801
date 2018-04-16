@@ -61,6 +61,10 @@ public class WindowPrint extends javax.swing.JFrame {
     Stack<Character> pila = new Stack<Character>();
     private List<Character> listaPila = new ArrayList<Character>();
 
+    private int posicionSimboloALeer = 0;
+    private String estadoActual = "";
+    private String caracteresEnlaPila = "";
+
     private WindowEditAP editAP;
 
     public WindowPrint() {
@@ -116,6 +120,7 @@ public class WindowPrint extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         Cadena = new javax.swing.JLabel();
         inputDataAP = new javax.swing.JTextField();
+        btnLeerSimbolo = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -128,7 +133,6 @@ public class WindowPrint extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         jMenuItem6 = new javax.swing.JMenuItem();
 
@@ -272,6 +276,14 @@ public class WindowPrint extends javax.swing.JFrame {
             }
         });
 
+        btnLeerSimbolo.setText("Leer simbolo");
+        btnLeerSimbolo.setEnabled(false);
+        btnLeerSimbolo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLeerSimboloActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -280,7 +292,9 @@ public class WindowPrint extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(Cadena)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(inputDataAP, javax.swing.GroupLayout.DEFAULT_SIZE, 845, Short.MAX_VALUE)
+                .addComponent(inputDataAP, javax.swing.GroupLayout.DEFAULT_SIZE, 694, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnLeerSimbolo, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -289,7 +303,8 @@ public class WindowPrint extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Cadena, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inputDataAP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(inputDataAP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLeerSimbolo))
                 .addContainerGap())
         );
 
@@ -309,7 +324,7 @@ public class WindowPrint extends javax.swing.JFrame {
             .addGroup(panelDeOperacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelDeOperacionesLayout.createSequentialGroup()
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 55, Short.MAX_VALUE)))
+                    .addGap(0, 58, Short.MAX_VALUE)))
         );
 
         scrollOperaciones.setViewportView(panelDeOperaciones);
@@ -442,10 +457,6 @@ public class WindowPrint extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem2);
-
-        jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem5.setText("Save Matriz (PDF)        ");
-        jMenu1.add(jMenuItem5);
         jMenu1.add(jSeparator3);
 
         jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
@@ -535,21 +546,6 @@ public class WindowPrint extends javax.swing.JFrame {
         setLocation(getLocation().x + evt.getX() - x, getLocation().y + evt.getY() - y);
     }//GEN-LAST:event_jMenuBar1MouseDragged
 
-    private void inputDataAPKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputDataAPKeyTyped
-        boolean estaEnPermitidos = false;
-        for (int i = 0; i < a.getSimbolosEntrada().length; i++) {
-            if (evt.getKeyChar() == a.getSimbolosEntrada()[i]) {
-                estaEnPermitidos = true;
-                break;
-            }
-        }
-        if (!estaEnPermitidos) {
-            evt.consume();
-        } else {
-            ejecutarTransaccion(evt.getKeyChar());
-        }
-    }//GEN-LAST:event_inputDataAPKeyTyped
-
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         try {
             editAP.cargarJSONParaEditar(new JSONObject(jsonVacio));
@@ -576,6 +572,47 @@ public class WindowPrint extends javax.swing.JFrame {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void btnLeerSimboloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeerSimboloActionPerformed
+        // TODO add your handling code here:
+        String cadenaCaracteres = inputDataAP.getText().toString();
+        if (cadenaCaracteres.isEmpty()) {
+            posicionSimboloALeer = 0;
+
+            JOptionPane.showMessageDialog(null, "Ingrese una cadena de caracteres");
+        } else {
+            if (posicionSimboloALeer < cadenaCaracteres.length()) {
+                ejecutarTransicion(cadenaCaracteres.charAt(posicionSimboloALeer));
+            } else {
+                JOptionPane.showMessageDialog(null, "Se ha terminado de leer la hilera de caracteres y no se encontró un fin de secuencia '¬'");
+            }
+        }
+    }//GEN-LAST:event_btnLeerSimboloActionPerformed
+
+    private void inputDataAPKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputDataAPKeyTyped
+        boolean estaEnPermitidos = false;
+        posicionSimboloALeer = 0;
+        
+        pila.clear();
+        listaPila.clear();
+        
+        for (int i = caracteresEnlaPila.length() - 1; i >= 0; i--) {
+            pila.push(caracteresEnlaPila.charAt(i));
+            listaPila.add(caracteresEnlaPila.charAt(i));
+
+            mostrarPilaActual();
+        }
+
+        for (int i = 0; i < a.getSimbolosEntrada().length; i++) {
+            if (evt.getKeyChar() == a.getSimbolosEntrada()[i]) {
+                estaEnPermitidos = true;
+                break;
+            }
+        }
+        if (!estaEnPermitidos) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_inputDataAPKeyTyped
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -617,6 +654,7 @@ public class WindowPrint extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Cadena;
+    private javax.swing.JButton btnLeerSimbolo;
     private javax.swing.JLabel confiInicialPila;
     private javax.swing.JLabel estadoInicial;
     private javax.swing.JLabel estados;
@@ -633,7 +671,6 @@ public class WindowPrint extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -658,7 +695,7 @@ public class WindowPrint extends javax.swing.JFrame {
     private void initialConfig(JSONObject object) {
         panelTransiciones.removeAll();
         panelTransiciones.repaint();
-
+        
         try {
             a = getAutomataPila(object);
 
@@ -698,13 +735,13 @@ public class WindowPrint extends javax.swing.JFrame {
                 }
             }
 
-            Object[][] fullData = new Object[data.length+1][data[0].length];
+            Object[][] fullData = new Object[data.length + 1][data[0].length];
             for (int i = 0; i < fullData.length; i++) {
                 for (int j = 0; j < fullData[i].length; j++) {
                     if (i == 0) {
                         fullData[i][j] = columns[j];
                     } else {
-                        fullData[i][j] = data[i-1][j];
+                        fullData[i][j] = data[i - 1][j];
                     }
                 }
             }
@@ -873,6 +910,8 @@ public class WindowPrint extends javax.swing.JFrame {
                 estadosText += " }";
             }
         }
+
+        estadoActual = a.getInicial().getNombre();
         //</editor-fold>
 
         //<editor-fold desc="Estado inicial">
@@ -880,13 +919,25 @@ public class WindowPrint extends javax.swing.JFrame {
         //</editor-fold>
 
         //<editor-fold desc="Configuración inicial de la pila">
+        pila.clear();
+        listaPila.clear();
+
         for (int i = 0; i < a.getConfiguracionInicialPila().length; i++) {
+            caracteresEnlaPila += a.getConfiguracionInicialPila()[i];
+
             confiInicialText += a.getConfiguracionInicialPila()[i];
             if (i < a.getConfiguracionInicialPila().length - 1) {
                 confiInicialText += ", ";
             } else {
                 confiInicialText += " }";
             }
+        }
+
+        for (int i = caracteresEnlaPila.length() - 1; i >= 0; i--) {
+            pila.push(caracteresEnlaPila.charAt(i));
+            listaPila.add(caracteresEnlaPila.charAt(i));
+
+            mostrarPilaActual();
         }
         //</editor-fold>
 
@@ -928,13 +979,7 @@ public class WindowPrint extends javax.swing.JFrame {
         confiInicialPila.setText(confiInicialText);
         transicionesAp.setText(transicionesText);
         inputDataAP.setEnabled(true);
-    }
-
-    private void ejecutarTransaccion(char c) {
-        pila.push(c);
-        listaPila.add(c);
-
-        mostrarPilaActual();
+        btnLeerSimbolo.setEnabled(true);
     }
 
     private void mostrarPilaActual() {
@@ -956,7 +1001,131 @@ public class WindowPrint extends javax.swing.JFrame {
 
     public void nuevoJSONAPDeLaVista(JSONObject jSONObject) throws JSONException {
         jsonAP = jSONObject;
-
+        
         initialConfig(jsonAP);
+    }
+
+    private void ejecutarTransicion(char charAt) {
+        String estadoAct = estadoActual;
+        String simboloEntrada = String.valueOf(charAt);
+        String simboloTopePila = String.valueOf(pila.get(pila.size() - 1));
+        Estado estado = null;
+
+        for (Estado e : a.getEstados()) {
+            if (e.getNombre().equals(estadoAct)) {
+                estado = e;
+                break;
+            }
+        }
+
+        if (estado != null) {
+            String[][] matrizTransiciones = matrizDeTransiciones(estado);
+            String transicion = "";
+
+            int i;
+            int j;
+            for (i = 0; i < matrizTransiciones.length; i++) {
+                if (matrizTransiciones[i][0].equals(simboloTopePila)) {
+                    break;
+                }
+            }
+
+            for (j = 0; j < matrizTransiciones.length; j++) {
+                if (matrizTransiciones[0][j].equals(simboloEntrada)) {
+                    break;
+                }
+            }
+
+            transicion = matrizTransiciones[i][j];
+
+            Transicion tr = null;
+            for (Transicion t : a.getTransiciones()) {
+                if (t.getNombre().equals(transicion)) {
+                    tr = t;
+                    break;
+                }
+            }
+
+            String operEnPila = tr.getOperacionEnPila();
+            String operEnEsta = tr.getOperacionDeEstado();
+            String operEntrad = tr.getOperacionDeEntrada();
+
+            if (operEnPila == null) {
+                operEnPila = "Nada";
+            }
+
+            if (operEnEsta == null) {
+                operEnEsta = "Nada";
+            }
+
+            if (operEntrad == null) {
+                operEntrad = "Nada";
+            }
+
+            if (operEnPila.toLowerCase().contains("apila")) {
+                pila.push(operEnPila.charAt(7));
+                listaPila.add(operEnPila.charAt(7));
+
+                mostrarPilaActual();
+            } else if (operEnPila.toLowerCase().contains("desapile")) {
+                pila.pop();
+                listaPila.remove(listaPila.size() - 1);
+
+                mostrarPilaActual();
+            }
+
+            if (operEnEsta.toLowerCase().contains("permanezca")) {
+                // Permanece en el estado oactual
+            } else if (operEnEsta.toLowerCase().contains("cambia a")) {
+                estadoActual = operEnEsta.substring(9, operEnEsta.length());
+            }
+
+            if (operEntrad.toLowerCase().contains("avance")) {
+                posicionSimboloALeer++;
+            } else if (operEntrad.toLowerCase().contains("retenga")) {
+                // Leo nuevamente el mismo simbolo
+            }
+
+            if (operEnPila.equals("Acepte") || operEnEsta.equals("Acepte") || operEntrad.equals("Acepte")) {
+                JOptionPane.showMessageDialog(null, "¡¡Hilera reconocida!!\nPosición actual de lectura: " + posicionSimboloALeer + "\nEstado actual: " + estadoActual);
+            } else if (operEnPila.equals("Rechace") || operEnEsta.equals("Rechace") || operEntrad.equals("Rechace")) {
+                JOptionPane.showMessageDialog(null, "¡¡Hilera rechazada!!");
+            }
+
+        }
+    }
+
+    private String[][] matrizDeTransiciones(Estado e) {
+
+        String[] columns = new String[a.getSimbolosEntrada().length + 1];
+        columns[0] = "";
+        for (int i = 1; i < a.getSimbolosEntrada().length + 1; i++) {
+            columns[i] = String.valueOf(a.getSimbolosEntrada()[i - 1]);
+        }
+
+        Object[][] data = new Object[a.getSimbolosPila().length][a.getSimbolosEntrada().length + 1];
+        String[][] transiciones = e.getTransiciones();
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < transiciones[i].length + 1; j++) {
+                if (j == 0) {
+                    data[i][j] = a.getSimbolosPila()[i];
+                } else {
+                    data[i][j] = transiciones[i][j - 1];
+                }
+            }
+        }
+
+        String[][] fullData = new String[data.length + 1][data[0].length];
+        for (int i = 0; i < fullData.length; i++) {
+            for (int j = 0; j < fullData[i].length; j++) {
+                if (i == 0) {
+                    fullData[i][j] = String.valueOf(columns[j]);
+                } else {
+                    fullData[i][j] = String.valueOf(data[i - 1][j]);
+                }
+            }
+        }
+
+        return fullData;
     }
 }
